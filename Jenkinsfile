@@ -36,7 +36,7 @@ node("${env.SLAVE}") {
   stage("Test Artefact is deployed successfully"){
     sh "ansible-playbook application_tests.yml"
     sh "echo ansible-playbook application_tests.yml"
-
+    sleep 300
   }
 
 }
