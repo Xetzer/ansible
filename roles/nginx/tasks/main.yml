@@ -1,0 +1,22 @@
+- name: Installing NGINX
+  yum:
+    name: nginx
+    state: present
+  become: true
+  become_user: root
+
+- name: NGINX
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  become: true
+  become_method: sudo
+
+- name: restarting_nginx
+  systemd:
+    daemon-reload: yes
+    name: nginx
+    enabled: yes
+    state: restarted
+  become: true
+  become_user: root

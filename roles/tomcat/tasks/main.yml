@@ -1,0 +1,70 @@
+- name: Creating group
+  group:
+    name: "{{ tomcat_group }}"
+  become: true
+  become_method: sudo
+
+- name: Creating user
+  user:
+    name: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+  become: true
+  become_method: sudo
+
+- name: Downloading Tomcat
+  get_url:
+    url: "{{ tomcat_link }}"
+    dest: /tmp/apache.tar.gz
+    force: yes
+  become: true
+  become_user: "{{ tomcat_user }}"
+
+- name: Making tomcat dir
+  file:
+    path: /opt/tomcat
+    state: directory
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+  become: true
+  become_method: sudo
+
+- name: Making version dir
+  file:
+    path: /opt/tomcat/{{ tomcat_v }}
+    state: directory
+  become: true
+  become_user: "{{ tomcat_user }}"
+
+- name: Unpacking Tomcat
+  unarchive:
+    src: /tmp/apache.tar.gz
+    dest: "{{ catalina_home }}"
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+  become: true
+  become_user: "{{ tomcat_user }}"
+
+- name: Creating symlink
+  file:
+    src: "{{ catalina_home }}/logs"
+    dest: /var/log/tomcat
+    state: link
+    force: yes
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+  become: true
+  become_method: sudo
+
+- name: Copying tomcat.service file
+  copy:
+    src: tomcat.service
+    dest: /etc/systemd/system/tomcat.service
+  become: true
+  become_method: sudo
+
+- name: restarting_tomcat
+  systemd:
+    name: tomcat
+    state: restarted
+  become: true
+  become_method: sudo

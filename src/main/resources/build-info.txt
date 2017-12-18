@@ -1,0 +1,8 @@
+Developer Name: Siarhei Beliakou
+Build time: 11:20
+Build Machine Name: epbyminw6406.minsk.epam.com
+Build User Name: ihar_lahutka@epam.com
+Git URL: https://git.epam.com/siarhei_beliakou/mntlab-exam
+Git Commit: 1
+Git Branch: ilahutka
+Build Date: Sat Mar 25 16:46:13 +03 2017
