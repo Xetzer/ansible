@@ -23,22 +23,22 @@
       ansible_ssh_private_key_file: "{{ provision.ssh_key }}"
     when: provision.state == "running"  
 
-  - name: Creating newinventory
-    file:
-      path: /var/server/jenkins/slave/workspace/EPBYMINW6406/mntlab-ansible-day-Final/
-      state: touch
-      mode: 0755
-   
-  - name: Adding header
-    lineinfile:
-      path: /var/server/jenkins/slave/workspace/EPBYMINW6406/mntlab-ansible-day-Final/newinventory
-      state: present
-      create: yes
-      line: "[all]"
-
-  - name: Creating new inventory
-    lineinfile:
-      path: /var/server/jenkins/slave/workspace/EPBYMINW6406/mntlab-ansible-day-Final/newinventory
-      state: present
-      create: yes
-      line: "pet ansible_connection=ssh ansible_ssh_host={{ provision.ip_address }} ansible_ssh_port={{ provision.port }} ansible_ssh_user={{ provision.username }} ansible_ssh_private_key_file={{ provision.ssh_key }}"
+#  - name: Creating newinventory
+#    file:
+#      path: /var/server/jenkins/slave/workspace/EPBYMINW6406/mntlab-ansible-day-Final/
+#      state: touch
+#      mode: 0755
+#   
+#  - name: Adding header
+#    lineinfile:
+#      path: /var/server/jenkins/slave/workspace/EPBYMINW6406/mntlab-ansible-day-Final/newinventory
+#      state: present
+#      create: yes
+#      line: "[all]"
+#
+#  - name: Creating new inventory
+#    lineinfile:
+#      path: /var/server/jenkins/slave/workspace/EPBYMINW6406/mntlab-ansible-day-Final/newinventory
+#      state: present
+#      create: yes
+#      line: "pet ansible_connection=ssh ansible_ssh_host={{ provision.ip_address }} ansible_ssh_port={{ provision.port }} ansible_ssh_user={{ provision.username }} ansible_ssh_private_key_file={{ provision.ssh_key }}"

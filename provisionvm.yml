@@ -1,5 +1,6 @@
+- import_playbook: createvm.yml
 - name: Provisioning dev stack
-  hosts: pet
+  hosts: final
   roles:
     - java
     - tomcat

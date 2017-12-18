@@ -22,19 +22,19 @@ node("${env.SLAVE}") {
   }
 
   stage("Provision VM"){
-    sh "ansible-playbook provisionvm.yml -i newinventory"
+    sh "ansible-playbook provisionvm.yml"
     sh "echo ansible-playbook provisionvm.yml"
 
   }
 
   stage("Deploy Artefact"){
-    sh "ansible-playbook deploy.yml -i newinventory"
+    sh "ansible-playbook deploy.yml"
     sh "echo ansible-playbook deploy.yml"
 
   }
 
   stage("Test Artefact is deployed successfully"){
-    sh "ansible-playbook application_tests.yml -i newinventory"
+    sh "ansible-playbook application_tests.yml"
     sh "echo ansible-playbook application_tests.yml"
 
   }

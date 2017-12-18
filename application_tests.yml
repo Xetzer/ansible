@@ -1,5 +1,6 @@
+- import_playbook: createvm.yml
 - name: Checking deploy
-  hosts: pet
+  hosts: final
   tasks:
 
   - name: Testing curl

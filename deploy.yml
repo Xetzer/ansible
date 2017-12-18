@@ -1,5 +1,6 @@
+- import_playbook: createvm.yml
 - name : Deploying war
-  hosts: pet
+  hosts: final
 
   roles:
     - deploy 
