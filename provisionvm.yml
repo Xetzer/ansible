@@ -1,6 +1,0 @@
-- name: Provisioning dev stack
-  hosts: pet
-  roles:
-    - java
-    - tomcat
-    - nginx
