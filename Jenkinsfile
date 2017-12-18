@@ -2,7 +2,8 @@ node("${env.SLAVE}") {
 
   stage("Build"){
 
-    git branch: 'ilahutka', url: 'git@git.epam.com:siarhei_beliakou/mntlab-exam.git'
+    #git branch: 'ilahutka', url: 'git@git.epam.com:siarhei_beliakou/mntlab-exam.git'
+    git branch: 'master', url: 'git@github.com:Xetzer/ansible.git'
     sh "mvn clean package -DbuildNumber=$BUILD_NUMBER"
     sh "echo build artefact"
 
