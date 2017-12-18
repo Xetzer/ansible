@@ -1,0 +1,6 @@
+- name: restarting
+  systemd:
+    name: tomcat
+    state: restarted
+  become: true
+  become_method: sudo

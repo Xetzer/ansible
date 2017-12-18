@@ -1,0 +1,5 @@
+- name : Deploying war
+  hosts: pet
+
+  roles:
+    - deploy 

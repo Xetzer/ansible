@@ -1,0 +1,13 @@
+- name: Checking deploy
+  hosts: pet
+  tasks:
+
+  - name: Testing curl
+    shell: sleep 20 && curl -s http://127.0.0.1:8080/mntexam/ | grep Deploy
+    changed_when: False
+    register: curl_status 
+    failed_when: "'DETAILS' not in curl_status.stdout"
+
+  - name: Printing string
+    debug:
+      msg: "Curl: {{ curl_status.stdout }}"
