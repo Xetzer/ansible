@@ -1,0 +1,10 @@
+- name: Testing Java
+  shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g' 
+  changed_when: False
+  register: java_v 
+  failed_when: "java_version not in java_v.stdout"
+
+- name: Printing Java version
+  debug:
+    msg: "Java version: {{ java_v.stdout }}"
+

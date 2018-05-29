@@ -1,0 +1,15 @@
+- name: Installation
+  hosts: all  
+  roles:
+    - java
+    - tomcat
+    - nginx
+
+- name: Verification 
+  hosts: all
+  roles:
+    - java_test
+    - tomcat_test
+      #    - nginx_test
+
+

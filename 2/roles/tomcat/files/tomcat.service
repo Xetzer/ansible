@@ -21,4 +21,3 @@ Group=tomcat_as_group
 
 [Install]
 WantedBy=multi-user.target
-

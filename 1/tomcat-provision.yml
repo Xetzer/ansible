@@ -3,7 +3,7 @@
   vars:
     tomcat_user: tomcat_as
     tomcat_group: tomcat_as_group
-    tomcat_v: 8.5.0
+    tomcat_v: 8.5.24
     tomcat_urls: 
       8.5.24: http://archive.apache.org/dist/tomcat/tomcat-{{ tomcat_v.split('.')[0] }}/v{{ tomcat_v }}/bin/apache-tomcat-{{ tomcat_v }}.tar.gz
       8.5.2: http://archive.apache.org/dist/tomcat/tomcat-{{ tomcat_v.split('.')[0] }}/v{{ tomcat_v }}/bin/apache-tomcat-{{ tomcat_v }}.tar.gz
@@ -15,89 +15,89 @@
     java_version: 1.8.0
 
   tasks:
-    - name: Installing Java
-      yum:
-        name: java-{{ java_version }}-openjdk.x86_64
-        state: present
-      become: true
-      become_method: sudo
+  - name: Installing Java
+    yum:
+      name: java-{{ java_version }}-openjdk.x86_64
+      state: present
+    become: true
+    become_method: sudo
 
-    - name: Creating group
-      group:
-        name: "{{ tomcat_group }}"
-      become: true
-      become_method: sudo
+  - name: Creating group
+    group:
+      name: "{{ tomcat_group }}"
+    become: true
+    become_method: sudo
 
-    - name: Creating user
-      user:
-        name: "{{ tomcat_user }}"
-        group: "{{ tomcat_group }}"
-      become: true
-      become_method: sudo
+  - name: Creating user
+    user:
+      name: "{{ tomcat_user }}"
+      group: "{{ tomcat_group }}"
+    become: true
+    become_method: sudo
 
-    - name: Downloading Tomcat
-      get_url:
-        url: "{{ tomcat_link }}"
-        dest: /tmp/apache.tar.gz
-        force: yes
-      become: true
-      become_user: "{{ tomcat_user }}"
+  - name: Downloading Tomcat
+    get_url:
+      url: "{{ tomcat_link }}"
+      dest: /tmp/apache.tar.gz
+      force: yes
+    become: true
+    become_user: "{{ tomcat_user }}"
 
-    - name: Making tomcat dir
-      file:
-        path: /opt/tomcat
-        state: directory
-        owner: "{{ tomcat_user }}"
-        group: "{{ tomcat_group }}"
-      become: true
-      become_method: sudo
+  - name: Making tomcat dir
+    file:
+      path: /opt/tomcat
+      state: directory
+      owner: "{{ tomcat_user }}"
+      group: "{{ tomcat_group }}"
+    become: true
+    become_method: sudo
 
-    - name: Making version dir
-      file:
-        path: /opt/tomcat/{{ tomcat_v }}
-        state: directory
-      become: true
-      become_user: "{{ tomcat_user }}"
+  - name: Making version dir
+    file:
+      path: /opt/tomcat/{{ tomcat_v }}
+      state: directory
+    become: true
+    become_user: "{{ tomcat_user }}"
 
-    - name: Unpacking Tomcat
-      unarchive:
-        src: /tmp/apache.tar.gz
-        dest: "{{ catalina_home }}"
-        remote_src: yes
-        extra_opts: [--strip-components=1]
-      become: true
-      become_user: "{{ tomcat_user }}"
+  - name: Unpacking Tomcat
+    unarchive:
+      src: /tmp/apache.tar.gz
+      dest: "{{ catalina_home }}"
+      remote_src: yes
+      extra_opts: [--strip-components=1]
+    become: true
+    become_user: "{{ tomcat_user }}"
 
-    - name: Creating symlink
-      file:
-        src: "{{ catalina_home }}/logs"
-        dest: /var/log/tomcat
-        state: link
-        force: yes
-        owner: "{{ tomcat_user }}"
-        group: "{{ tomcat_group }}"
-      become: true
-      become_method: sudo
+  - name: Creating symlink
+    file:
+      src: "{{ catalina_home }}/logs"
+      dest: /var/log/tomcat
+      state: link
+      force: yes
+      owner: "{{ tomcat_user }}"
+      group: "{{ tomcat_group }}"
+    become: true
+    become_method: sudo
 
-#    - name: Copying tomcat.service file
-#      copy:
-#        src: tomcat.service
-#        dest: /etc/systemd/system/tomcat.service
-#      become: true
-#      become_method: sudo
+#  - name: Copying tomcat.service file
+#    copy:
+#      src: tomcat.service
+#      dest: /etc/systemd/system/tomcat.service
+#    become: true
+#    become_method: sudo
 
-    - name: Copying tomcat.service file
-      template:
-        src: tomcat.service.j2
-        dest: /etc/systemd/system/tomcat.service
-      become: true
-      become_method: sudo
+  - name: Copying tomcat.service file
+    template:
+      src: tomcat.service.j2
+      dest: /etc/systemd/system/tomcat.service
+    become: true
+    become_method: sudo
 
-    - name: Restarting Tomcat
-      systemd:
-        daemon-reload: yes
-        name: tomcat
-        enabled: yes
-        state: restarted
-      become: true
-      become_method: sudo
+  - name: Restarting Tomcat
+    systemd:
+      daemon-reload: yes
+      name: tomcat
+      enabled: yes
+      state: restarted
+    become: true
+    become_method: sudo
