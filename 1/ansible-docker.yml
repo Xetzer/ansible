@@ -1,0 +1,70 @@
+- hosts: localhost
+  
+  vars:
+    dockpath: /home/vagrant/docker_lab/1/
+
+  tasks:
+  - name: Creating Tomcat image
+    docker_image:
+      name: mytc
+      dockerfile: tomcat.Dockerfile
+      path: "{{ dockpath }}"
+      tag: latest
+      state: present
+
+  - name: Creating nginx image
+    docker_image:
+      name: myng
+      dockerfile: nginx.Dockerfile
+      path: "{{ dockpath }}"
+      tag: latest
+      state: present
+
+  - name: Creating Tomcat volume
+    docker_image:
+      name: apps
+      dockerfile: apps.Dockerfile
+      path: "{{ dockpath }}"
+      tag: latest
+      state: present
+
+  - name: Creating nginx volume
+    docker_image:
+      name: confs
+      dockerfile: confs.Dockerfile
+      path: "{{ dockpath }}"
+      tag: latest
+      state: present
+
+  - name: Running Tomcat volume
+    docker_container:
+      name: myapps
+      image: apps
+      state: present 
+
+  - name: Running nginx volume
+    docker_container:
+      name: myconfs
+      image: confs
+      state: present
+
+  - name: Running Tomcat container
+    docker_container:
+      name: mytomcat
+      image: mytc
+      volumes_from:
+        - myapps  
+      state: started
+
+  - name: Running nginx container
+    docker_container:
+      name: mynginx
+      image: myng
+      ports: 
+        - 80:80
+      volumes_from:
+        - myconfs
+      links:
+        - mytomcat:tomcat
+      state: started
+
